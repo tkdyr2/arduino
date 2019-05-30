@@ -1,15 +1,11 @@
 
 #include "HX711.h" //HX711로드셀 엠프 관련함수 호출
-#include <Wire.h>
-#include "OzOLED.h"
 #define calibration_factor -7050.0 // 로드셀 스케일 값 선언
 #define DOUT  A1 //엠프 데이터 아웃 핀 넘버 선언
 #define CLK  A0  //엠프 클락 핀 넘버 
 HX711 scale(DOUT, CLK); //엠프 핀 선언 
 
 void setup() {
-  OzOled.init();  //initialze Eduino OLED display
-  OzOled.printString("Hello World!"); //Print the String
   Serial.begin(9600);  // 시리얼 통신 개방
   Serial.println("HX711 scale TEST");  
   scale.set_scale(calibration_factor);  //스케일 지정 
@@ -18,7 +14,6 @@ void setup() {
 }
 
 void loop() {
-  OzOled.printString("Hello World!", 0, 0); //Print the String
   Serial.print("Reading: ");
   Serial.print(scale.get_units(), 1);  //무제 출력 
   Serial.print(" lbs"); //단위
