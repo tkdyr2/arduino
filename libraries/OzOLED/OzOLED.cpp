@@ -567,9 +567,9 @@ void OzOLED::init(){
 	}
 	
     setPowerOff(); 	//display off
-    delay(100);
+    delay(10);
     setPowerOn();	//display on
-    delay(100); 
+    delay(10); 
     setNormalDisplay();  //default Set Normal Display
 	setPageMode();	// default addressing mode
 	clearDisplay();
