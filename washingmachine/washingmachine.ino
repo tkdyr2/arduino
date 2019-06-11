@@ -9,6 +9,9 @@ HX711 scale(DOUT, CLK); //엠프 핀 선언
 int buttonApin = 5; //세탁기1 버튼1
 int buttonBpin = 6; //세탁기1 버튼2
 int buttonCpin = 7; //세탁기1 버튼3
+int red = 8;  //빨간색 LED
+int white = 9; //하얀색 LED
+int blue = 10; //파란색 LED
 
 int state = 1; //세탁기1 상태 0..고장 1..사용가능 2..사용중
 int rg = 0; //세탁기1 예약 0..예약안됨 1..예약 중
@@ -27,7 +30,9 @@ void setup() {
   pinMode(buttonBpin, INPUT_PULLUP);
   pinMode(buttonCpin, INPUT_PULLUP);
   pinMode(pin,OUTPUT);
-  t.pulse(pin,lefttime1*60*1000,HIGH);
+  pinMode(red,OUTPUT);
+  pinMode(white,OUTPUT);
+  pinMode(blue,OUTPUT);
 }
 
 void loop() {
@@ -36,11 +41,26 @@ void loop() {
   Serial.print(" lbs"); //단위
   Serial.println(); 
   t.update();
-  if(state == 1){
-   if (digitalRead(buttonApin1) == LOW)
+  if(state == 0){
+    digitalWrite(red,HIGH);
+    digitalWrite(white,LOW);
+    digitalWrite(blue,LOW);
+  }
+   if(state == 1){
+    digitalWrite(red,LOW);
+    digitalWrite(white,LOW);
+    digitalWrite(blue,HIGH);
+  }
+   if(state == 2){
+    digitalWrite(red,LOW);
+    digitalWrite(white,HIGH);
+    digitalWrite(blue,LOW);
+  }
+  
+   if (digitalRead(buttonApin) == LOW)
     {
-      if(mode == 0){
-      
+      if(mode == 0){  
+        Serial.println("세탁모드 저");
       }
      else{
        mode--;//세탁모드 내림
@@ -55,10 +75,10 @@ void loop() {
         }
       }
    }
-   if (digitalRead(buttonBpin1) == LOW)
+   if (digitalRead(buttonBpin) == LOW)
     {
      if(mode == 2){
-      
+      Serial.println("세탁모드 고");
      }
      else{
         mode++;//세탁모드 올림
@@ -73,8 +93,7 @@ void loop() {
          }
       }
    }
-  }
-    if (digitalRead(buttonCpin1) == LOW)
+    if(digitalRead(buttonCpin) == LOW)
    {
      if(state == 0){
         Serial.println("세탁기 고장");
